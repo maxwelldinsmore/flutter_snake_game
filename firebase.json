@@ -1,10 +1,1 @@
-{
-  "emulators": {
-    "dataconnect": {
-      "dataDir": "dataconnect/.dataconnect/pgliteData"
-    }
-  },
-  "dataconnect": {
-    "source": "dataconnect"
-  }
-}
+{"emulators":{"dataconnect":{"dataDir":"dataconnect/.dataconnect/pgliteData"}},"dataconnect":{"source":"dataconnect"},"flutter":{"platforms":{"android":{"default":{"projectId":"flutter-snake-game-4d18c","appId":"1:389971620598:android:3a9aacd3047335e706b2d7","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"flutter-snake-game-4d18c","configurations":{"android":"1:389971620598:android:3a9aacd3047335e706b2d7","ios":"1:389971620598:ios:e5ade98897ca867f06b2d7","web":"1:389971620598:web:4be335477365ee2a06b2d7","windows":"1:389971620598:web:200d03afbbf66e4b06b2d7"}}}}}}

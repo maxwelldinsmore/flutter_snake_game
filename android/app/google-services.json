@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "389971620598",
+    "project_id": "flutter-snake-game-4d18c",
+    "storage_bucket": "flutter-snake-game-4d18c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389971620598:android:3a9aacd3047335e706b2d7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_snake_game"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPZDTDowFmLsyiUXmpQ1R5V0brlyRZtqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
