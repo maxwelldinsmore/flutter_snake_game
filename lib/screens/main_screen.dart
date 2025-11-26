@@ -35,7 +35,6 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Game'),
           BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'Leaderboard'),
-          BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Play'),
         ],
       ),
     );
