@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../database.dart';
 import 'register_screen.dart';
 import 'main_screen.dart';
-
+import '../tempdata.dart' as temp_data;
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -36,6 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) {
         // On success navigate to main screen
         if (!mounted) return;
+        temp_data.isLoggedIn = true;
+        temp_data.currentUsername = username;
+        temp_data.userId = user['id'] ?? '';
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const MainScreen()));
       } else {
         setState(() {
