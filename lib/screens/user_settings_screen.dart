@@ -83,116 +83,124 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Container(
-        color: Colors.black,
-        child: const Center(
-          child: CircularProgressIndicator(color: Color(0xFFE4FF19)),
+      return Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.black,
+          child: const Center(
+            child: CircularProgressIndicator(color: Color(0xFFE4FF19)),
+          ),
         ),
       );
     }
 
-    return Container(
-      color: Colors.black,
-      padding: const EdgeInsets.all(24.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            const Center(
-              child: Text(
-                'User Settings',
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.black,
+        padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              const Center(
+                child: Text(
+                  'User Settings',
+                  style: TextStyle(
+                    color: Color(0xFFE4FF19),
+                    fontSize: 48,
+                    fontFamily: 'arcade',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Username',
                 style: TextStyle(
                   color: Color(0xFFE4FF19),
-                  fontSize: 48,
+                  fontSize: 36,
                   fontFamily: 'arcade',
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Username',
-              style: TextStyle(
-                color: Color(0xFFE4FF19),
-                fontSize: 36,
-                fontFamily: 'arcade',
+              const SizedBox(height: 6),
+              TextField(
+                controller: _usernameCtrl,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xFFF4FAC5),
+                  hintText: 'Enter username',
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.all(10),
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _usernameCtrl,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color(0xFFF4FAC5),
-                hintText: 'Enter username',
-                border: OutlineInputBorder(borderSide: BorderSide.none),
-                contentPadding: EdgeInsets.all(10),
+              const SizedBox(height: 12),
+              const Text(
+                'password',
+                style: TextStyle(
+                  color: Color(0xFFE4FF19),
+                  fontSize: 36,
+                  fontFamily: 'arcade',
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'password',
-              style: TextStyle(
-                color: Color(0xFFE4FF19),
-                fontSize: 36,
-                fontFamily: 'arcade',
+              const SizedBox(height: 6),
+              TextField(
+                controller: _passwordCtrl,
+                keyboardType: TextInputType.visiblePassword,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xFFF4FAC5),
+                  hintText: 'Enter password',
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.all(10),
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _passwordCtrl,
-              keyboardType: TextInputType.visiblePassword,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color(0xFFF4FAC5),
-                hintText: 'Enter password',
-                border: OutlineInputBorder(borderSide: BorderSide.none),
-                contentPadding: EdgeInsets.all(10),
+              const SizedBox(height: 16),
+              const Text(
+                'Snake Colour',
+                style: TextStyle(
+                  color: Color(0xFFE4FF19),
+                  fontSize: 36,
+                  fontFamily: 'arcade',
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Snake Colour',
-              style: TextStyle(
-                color: Color(0xFFE4FF19),
-                fontSize: 36,
-                fontFamily: 'arcade',
+              const SizedBox(height: 6),
+              Text(
+                'Current: $_currentColour',
+                style: const TextStyle(
+                  color: Color(0xFFF4FAC5),
+                  fontSize: 24,
+                  fontFamily: 'arcade',
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'Current: $_currentColour',
-              style: const TextStyle(
-                color: Color(0xFFF4FAC5),
-                fontSize: 24,
-                fontFamily: 'arcade',
+              const SizedBox(height: 6),
+              TextField(
+                controller: _colourCtrl,
+                keyboardType: TextInputType.visiblePassword,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Color(0xFFF4FAC5),
+                  hintText: 'Enter password',
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.all(10),
+                ),
               ),
-            ),
-            const SizedBox(height: 6),
-            TextField(
-              controller: _colourCtrl,
-              keyboardType: TextInputType.visiblePassword,
-              style: const TextStyle(color: Colors.black),
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color(0xFFF4FAC5),
-                hintText: 'Enter password',
-                border: OutlineInputBorder(borderSide: BorderSide.none),
-                contentPadding: EdgeInsets.all(10),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveSettings,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFE4FF19),
+                  foregroundColor: Colors.black,
+                ),
+                child: const Text('Save', style: TextStyle(fontSize: 28, fontFamily: 'arcade')),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveSettings,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE4FF19),
-                foregroundColor: Colors.black,
-              ),
-              child: const Text('Save', style: TextStyle(fontSize: 28, fontFamily: 'arcade')),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
