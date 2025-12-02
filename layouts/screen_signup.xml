@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#000000"
+	android:padding="24dp">
+
+	<LinearLayout
+		android:id="@+id/center_column"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:gravity="center"
+		android:layout_centerInParent="true">
+
+		<TextView
+			android:id="@+id/tv_signup_title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Sign Up"
+			android:textColor="#E4FF19"
+			android:fontFamily="ArcadeClassic"
+			android:textSize="48sp"
+			android:textStyle="normal"
+			android:layout_marginBottom="8dp" />
+
+		<TextView
+			android:id="@+id/tv_signup_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="sign up"
+			android:textColor="#E4FF19"
+			android:fontFamily="ArcadeClassic"
+			android:textSize="36sp"
+			android:textStyle="normal"
+			android:layout_marginBottom="16dp" />
+
+		<TextView
+			android:id="@+id/tv_username_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Username"
+			android:textColor="#E4FF19"
+			android:fontFamily="ArcadeClassic"
+			android:textSize="36sp"
+			android:textStyle="normal"
+			android:layout_marginBottom="8dp" />
+
+		<EditText
+			android:id="@+id/et_username"
+			android:layout_width="280dp"
+			android:layout_height="wrap_content"
+			android:background="#F4FAC5"
+			android:padding="8dp"
+			android:textColor="#000000"
+			android:layout_marginBottom="16dp"
+			android:hint="Choose a username" />
+
+		<TextView
+			android:id="@+id/tv_password_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Password"
+			android:textColor="#E4FF19"
+			android:fontFamily="ArcadeClassic"
+			android:textSize="36sp"
+			android:textStyle="normal"
+			android:layout_marginBottom="8dp" />
+
+		<EditText
+			android:id="@+id/et_password"
+			android:layout_width="280dp"
+			android:layout_height="wrap_content"
+			android:background="#F4FAC5"
+			android:padding="8dp"
+			android:textColor="#000000"
+			android:layout_marginBottom="20dp"
+			android:hint="Choose a password"
+			android:inputType="textPassword" />
+
+		<ImageButton
+			android:id="@+id/btn_signup"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/signup_button"
+			android:background="@null"
+			android:contentDescription="Sign up"
+			android:layout_marginTop="8dp" />
+
+	</LinearLayout>
+
+	<TextView
+		android:id="@+id/tv_login_link"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="log in here"
+		android:textColor="#E4FF19"
+		android:fontFamily="ArcadeClassic"
+		android:textSize="36sp"
+		android:textStyle="normal"
+		android:gravity="center"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="16dp"
+		android:clickable="true"
+		android:focusable="true" />
+
+</RelativeLayout>
+

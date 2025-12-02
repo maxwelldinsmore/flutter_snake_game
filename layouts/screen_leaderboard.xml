@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:padding="24dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_leaderboard_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="leaderboard"
+        android:textColor="#ED1212"
+        android:fontFamily="ArcadeClassic"
+        android:textSize="48sp"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp" />
+
+    <!-- Header row (no borders) -->
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/tv_leaderboard_title"
+        android:layout_marginTop="16dp"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/tv_header_rank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="Rank"
+            android:textColor="#E4FF19"
+            android:fontFamily="ArcadeClassic"
+            android:textSize="24sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tv_header_score"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Score"
+            android:textColor="#E4FF19"
+            android:fontFamily="ArcadeClassic"
+            android:textSize="24sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tv_header_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:text="Username"
+            android:textColor="#E4FF19"
+            android:fontFamily="ArcadeClassic"
+            android:textSize="24sp"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+
+    <!-- Container for leaderboard rows; keep empty at layout-time so app can populate -->
+    <LinearLayout
+        android:id="@+id/leaderboard_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/ll_header"
+        android:layout_marginTop="12dp"
+        android:paddingTop="4dp">
+
+        <!-- Example rows (you can leave these out and populate at runtime). These show different colors from the provided palette. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="1"
+                android:textColor="#FCFFE3"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="9999"
+                android:textColor="#2BDEAF"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:text="player_one"
+                android:textColor="#170CE9"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="2"
+                android:textColor="#D9121F"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="8500"
+                android:textColor="#FF7926"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:text="player_two"
+                android:textColor="#EC24D1"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <!-- Additional sample row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="3"
+                android:textColor="#0B8860"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="7000"
+                android:textColor="#F5EE1D"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:text="player_three"
+                android:textColor="#760B96"
+                android:fontFamily="ArcadeClassic"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+<!-- Random per-row coloring: XML alone cannot choose colors randomly at runtime. I added IDs and a leaderboard_container so you can populate rows programmatically. Here is a small Kotlin snippet you can use in an Activity/Fragment to populate the list and apply a random color from your palette to each record's TextViews:
+val palette = listOf("#FCFFE3","#2BDEAF","#170CE9","#D9121F","#FF7926","#EC24D1","#0B8860","#F5EE1D","#760B96","#42EA14")
+val container = findViewById<LinearLayout>(R.id.leaderboard_container)
+container.removeAllViews()
+val entries = listOf(
+    Triple("1","9999","player_one"),
+    Triple("2","8500","player_two"),
+    Triple("3","7000","player_three")
+)
+for ((rank, score, user) in entries) {
+    val row = layoutInflater.inflate(R.layout._leaderboard_row_stub, container, false) // optional reuse layout
+    val tvRank = TextView(this).apply {
+        text = rank
+        setTextColor(Color.parseColor(palette.random()))
+        typeface = resources.getFont(R.font.arcadeclassic) // if font added to res/font
+        textSize = 24f
+    }
+    val tvScore = TextView(this).apply {
+        text = score
+        setTextColor(Color.parseColor(palette.random()))
+        typeface = resources.getFont(R.font.arcadeclassic)
+        textSize = 24f
+    }
+    val tvUser = TextView(this).apply {
+        text = user
+        setTextColor(Color.parseColor(palette.random()))
+        typeface = resources.getFont(R.font.arcadeclassic)
+        textSize = 24f
+    }
+    val ll = LinearLayout(this).apply {
+        orientation = LinearLayout.HORIZONTAL
+        weightSum = 3f
+        addView(tvRank, LinearLayout.LayoutParams(0, WRAP_CONTENT, 0.6f))
+        addView(tvScore, LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f))
+        addView(tvUser, LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.4f))
+    }
+    container.addView(ll)
+} -->
