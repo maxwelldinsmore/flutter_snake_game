@@ -3,5 +3,5 @@
 // Retrieved 2025-11-26, License - CC BY-SA 4.0
 
 bool isLoggedIn = false;
-String currentUsername = '';
+String currentUsername = 'null';
 String userId = '';

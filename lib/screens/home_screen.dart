@@ -3,9 +3,7 @@ import '../snake_game.dart';
 
 class HomeScreen extends StatelessWidget {
   final Function(int)? onTabChange;
-  
   const HomeScreen({super.key, this.onTabChange});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,7 +12,7 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             'Snake Game',
             style: TextStyle(
               color: Colors.white,

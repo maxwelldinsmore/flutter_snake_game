@@ -1,16 +1,19 @@
 # flutter_snake_game
 
-A new Flutter project.
+A new Flutter project making a snake game for our mobile development class.
 
-## Getting Started
+- example login max
+- example password test123
+## Next Steps
 
-This project is a starting point for a Flutter application.
+- Implement leaderboard
+- Fix game UI
+- implement difficulty buttons
+- fix database issue of two users with same name
+- Implement game settings
+- add log out feature
+- remove debug banner
+- implement colour change of snake
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Optional Steps
+- sound effects
