@@ -15,19 +15,26 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selected = 0;
 
-  final List<Widget> _tabs = const [
-    HomeScreen(),
-    UserSettingsScreen(),
-    GameSettingsScreen(),
-    LeaderboardScreen(),
+  void _changeTab(int index) {
+    setState(() => _selected = index);
+  }
+
+  List<Widget> get _tabs => [
+    HomeScreen(onTabChange: _changeTab),
+    const UserSettingsScreen(),
+    const GameSettingsScreen(),
+    const LeaderboardScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Main')),
       body: IndexedStack(index: _selected, children: _tabs),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        selectedItemColor: const Color(0xFFE4FF19),
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selected,
         onTap: (i) => setState(() => _selected = i),
         items: const [

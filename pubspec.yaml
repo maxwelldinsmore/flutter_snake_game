@@ -69,8 +69,11 @@ flutter:
   # https://flutter.dev/to/resolution-aware-images
 
   # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
+  # https://flutter.dev/to/font-from-package
+  fonts:
+    - family: arcade
+      fonts:
+        - asset: lib/assets/ARCADECLASSIC.TTF
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

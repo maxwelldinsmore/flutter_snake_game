@@ -47,33 +47,117 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _usernameCtrl,
-              decoration: const InputDecoration(labelText: 'Username'),
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Color(0xFFE4FF19),
+                      fontSize: 48,
+                      fontFamily: 'arcade',
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'sign up',
+                    style: TextStyle(
+                      color: Color(0xFFE4FF19),
+                      fontSize: 36,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Username',
+                    style: TextStyle(
+                      color: Color(0xFFE4FF19),
+                      fontSize: 36,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: 280,
+                    child: TextField(
+                      controller: _usernameCtrl,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xFFF4FAC5),
+                        hintText: 'Choose a username',
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        contentPadding: EdgeInsets.all(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Password',
+                    style: TextStyle(
+                      color: Color(0xFFE4FF19),
+                      fontSize: 36,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: 280,
+                    child: TextField(
+                      controller: _passwordCtrl,
+                      obscureText: true,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xFFF4FAC5),
+                        hintText: 'Choose a password',
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        contentPadding: EdgeInsets.all(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  if (_error != null) ...[
+                    Text(_error!, style: const TextStyle(color: Colors.red)),
+                    const SizedBox(height: 8),
+                  ],
+                  ElevatedButton(
+                    onPressed: _loading ? null : _register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFE4FF19),
+                      foregroundColor: Colors.black,
+                    ),
+                    child: _loading ? const CircularProgressIndicator() : const Text('SIGN UP', style: TextStyle(fontSize: 24)),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _passwordCtrl,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
+          ),
+          Positioned(
+            bottom: 16,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: const Text(
+                'log in here',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFFE4FF19),
+                  fontSize: 36,
+                  fontFamily: 'arcade',
+                ),
+              ),
             ),
-            const SizedBox(height: 16),
-            if (_error != null) ...[
-              Text(_error!, style: const TextStyle(color: Colors.red)),
-              const SizedBox(height: 8),
-            ],
-            ElevatedButton(
-              onPressed: _loading ? null : _register,
-              child: _loading ? const CircularProgressIndicator() : const Text('Create account'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
