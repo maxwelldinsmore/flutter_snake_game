@@ -5,6 +5,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'app_provider.dart';
 
 class SnakeGame extends StatefulWidget {
   const SnakeGame({Key? key}) : super(key: key);
@@ -13,26 +15,17 @@ class SnakeGame extends StatefulWidget {
   State<SnakeGame> createState() => _SnakeGameState();
 }
 
-// Enums for the direction, grid size, snake speed, apple spawn rate, and theme. 
-enum Direction { up, down, left, right }
-enum GridSize { small, medium, large }
-enum SnakeSpeed { slow, medium, fast }
-enum AppleSpawnRate { normal, fast }
-enum GameTheme { retro, dark, light }
+
 
 // The main state class for the Snake Game.
 class _SnakeGameState extends State<SnakeGame> {
-  // Grid size setting (can be changed by settings).
+  // Game settings (will be updated from AppProvider).
   GridSize currentGridSize = GridSize.medium;
-  
-  // Snake speed setting (can be changed by settings).
   SnakeSpeed currentSpeed = SnakeSpeed.medium;
-  
-  // Apple spawn rate setting (can be changed by settings).
   AppleSpawnRate currentAppleSpawnRate = AppleSpawnRate.normal;
-  
-  // Theme setting (can be changed by settings).
   GameTheme currentTheme = GameTheme.retro;
+  AppProvider? _appProvider;
+  VoidCallback? _appListener;
   
   // Grid dimensions (will be calculated based on currentGridSize).
   int gridRows = 20;
@@ -58,9 +51,46 @@ class _SnakeGameState extends State<SnakeGame> {
 
 // Initialize the game state.
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     foodPosition = Random().nextInt(totalSquares);
+
+    // Get AppProvider instance.
+    final provider = context.read<AppProvider>();
+
+    if (_appProvider != provider) {
+      _appProvider = provider;
+
+    // Initial settings load.
+    currentGridSize = _appProvider!.currentGridSize;
+    currentSpeed = _appProvider!.currentSpeed;
+    currentAppleSpawnRate = _appProvider!.currentAppleSpawnRate;
+    currentTheme = _appProvider!.currentTheme;
+
+    // Listen for settings changes.
+    _appListener = () {
+      setState(() {
+        currentGridSize = _appProvider!.currentGridSize;
+        setGridSize(currentGridSize);
+        currentSpeed = _appProvider!.currentSpeed;
+        setSnakeSpeed(currentSpeed);
+        currentAppleSpawnRate = _appProvider!.currentAppleSpawnRate;
+        setAppleSpawnRate(currentAppleSpawnRate);
+        currentTheme = _appProvider!.currentTheme;
+        setTheme(currentTheme);
+      });
+    };
+      _appProvider!.addListener(_appListener!);
+    }
+  }
+
+  @override
+  void dispose() {
+    // Remove listener to avoid memory leaks.
+    if (_appProvider != null && _appListener != null) {
+      _appProvider!.removeListener(_appListener!);
+    }
+    super.dispose();
   }
 
   // Method to update grid size.
@@ -83,7 +113,7 @@ class _SnakeGameState extends State<SnakeGame> {
           break;
       }
       totalSquares = gridRows * gridCols;
-      
+
       // Reset game if it's running.
       if (gameStarted) {
         gameStarted = false;
@@ -353,231 +383,236 @@ class _SnakeGameState extends State<SnakeGame> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = getThemeColors();
-    
-    return Scaffold(
-      backgroundColor: colors['background'],
-      body: Column(
-        children: [
-          // High score display at the top
-          Expanded(
-            child: Container(
-              color: colors['panel'],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return Consumer<AppProvider>(
+      builder: (context, appProvider, child) {
+        final currentTheme = appProvider.currentTheme;
+        final colors = getThemeColors();
+
+        return Scaffold(
+          backgroundColor: colors['background'],
+          body: Column(
+            children: [
+              // High score display at the top
+              Expanded(
+                child: Container(
+                  color: colors['panel'],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                        'Current Score',
-                        style: TextStyle(
-                          color: colors['labelText'],
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Current Score',
+                            style: TextStyle(
+                              color: colors['labelText'],
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            currentScore.toString(),
+                            style: TextStyle(
+                              color: colors['scoreText'],
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        currentScore.toString(),
-                        style: TextStyle(
-                          color: colors['scoreText'],
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'High Score',
+                            style: TextStyle(
+                              color: colors['labelText'],
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            highScore.toString(),
+                            style: TextStyle(
+                              color: colors['scoreText'],
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'High Score',
-                        style: TextStyle(
-                          color: colors['labelText'],
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        highScore.toString(),
-                        style: TextStyle(
-                          color: colors['scoreText'],
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Game area in the middle
-          Expanded(
-            flex: 5,
-            child: GestureDetector(
-              onVerticalDragUpdate: (details) {
-                if (direction != Direction.up && details.delta.dy > 0) {
-                  direction = Direction.down;
-                } else if (direction != Direction.down && details.delta.dy < 0) {
-                  direction = Direction.up;
-                }
-              },
-              onHorizontalDragUpdate: (details) {
-                if (direction != Direction.left && details.delta.dx > 0) {
-                  direction = Direction.right;
-                } else if (direction != Direction.right && details.delta.dx < 0) {
-                  direction = Direction.left;
-                }
-              },
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: totalSquares,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: gridCols,
                 ),
-                itemBuilder: (context, index) {
-                  // Snake head
-                  if (snakePosition.last == index) {
-                    return Container(
-                      margin: const EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: colors['snakeHead'],
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: currentTheme == GameTheme.retro ? [
-                          BoxShadow(
-                            color: colors['snakeHead']!.withOpacity(0.5),
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                          ),
-                        ] : null,
-                      ),
-                    );
-                  }
-                  // Snake body
-                  else if (snakePosition.contains(index)) {
-                    return Container(
-                      margin: const EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: colors['snakeBody'],
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    );
-                  }
-                  // Food
-                  else if (foodPosition == index) {
-                    return Container(
-                      margin: const EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: colors['food'],
-                        borderRadius: BorderRadius.circular(4),
-                        boxShadow: currentTheme == GameTheme.retro ? [
-                          BoxShadow(
-                            color: colors['food']!.withOpacity(0.5),
-                            blurRadius: 8,
-                            spreadRadius: 1,
-                          ),
-                        ] : null,
-                      ),
-                    );
-                  }
-                  // Empty square
-                  else {
-                    return Container(
-                      margin: const EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: colors['gridEmpty'],
-                        border: Border.all(
-                          color: colors['gridLine']!,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    );
-                  }
-                },
               ),
-            ),
-          ),
-          // Control buttons at the bottom
-          Expanded(
-            child: Container(
-              color: colors['panel'],
-              child: !gameStarted
-                  ? Center(
-                      child: ElevatedButton(
-                        onPressed: startGame,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: colors['button'],
-                          foregroundColor: colors['buttonText'],
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
+              // Game area in the middle
+              Expanded(
+                flex: 5,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    if (direction != Direction.up && details.delta.dy > 0) {
+                      direction = Direction.down;
+                    } else if (direction != Direction.down && details.delta.dy < 0) {
+                      direction = Direction.up;
+                    }
+                  },
+                  onHorizontalDragUpdate: (details) {
+                    if (direction != Direction.left && details.delta.dx > 0) {
+                      direction = Direction.right;
+                    } else if (direction != Direction.right && details.delta.dx < 0) {
+                      direction = Direction.left;
+                    }
+                  },
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: totalSquares,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: gridCols,
+                    ),
+                    itemBuilder: (context, index) {
+                      // Snake head
+                      if (snakePosition.last == index) {
+                        return Container(
+                          margin: const EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            color: colors['snakeHead'],
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: currentTheme == GameTheme.retro ? [
+                              BoxShadow(
+                                color: colors['snakeHead']!.withOpacity(0.5),
+                                blurRadius: 8,
+                                spreadRadius: 1,
+                              ),
+                            ] : null,
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        );
+                      }
+                      // Snake body
+                      else if (snakePosition.contains(index)) {
+                        return Container(
+                          margin: const EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            color: colors['snakeBody'],
+                            borderRadius: BorderRadius.circular(4),
                           ),
-                          elevation: 8,
-                        ),
-                        child: const Text(
-                          'Start Game',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                        );
+                      }
+                      // Food
+                      else if (foodPosition == index) {
+                        return Container(
+                          margin: const EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            color: colors['food'],
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: currentTheme == GameTheme.retro ? [
+                              BoxShadow(
+                                color: colors['food']!.withOpacity(0.5),
+                                blurRadius: 8,
+                                spreadRadius: 1,
+                              ),
+                            ] : null,
                           ),
-                        ),
-                      ),
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            if (direction != Direction.right) {
-                              direction = Direction.left;
-                            }
-                          },
-                          icon: const Icon(Icons.arrow_back, size: 40),
-                          color: colors['arrow'],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        );
+                      }
+                      // Empty square
+                      else {
+                        return Container(
+                          margin: const EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                            color: colors['gridEmpty'],
+                            border: Border.all(
+                              color: colors['gridLine']!,
+                              width: 0.5,
+                            ),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              // Control buttons at the bottom
+              Expanded(
+                child: Container(
+                  color: colors['panel'],
+                  child: !gameStarted
+                      ? Center(
+                          child: ElevatedButton(
+                            onPressed: startGame,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: colors['button'],
+                              foregroundColor: colors['buttonText'],
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40,
+                                vertical: 20,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              elevation: 8,
+                            ),
+                            child: const Text(
+                              'Start Game',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             IconButton(
                               onPressed: () {
-                                if (direction != Direction.down) {
-                                  direction = Direction.up;
+                                if (direction != Direction.right) {
+                                  direction = Direction.left;
                                 }
                               },
-                              icon: const Icon(Icons.arrow_upward, size: 40),
+                              icon: const Icon(Icons.arrow_back, size: 40),
                               color: colors['arrow'],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    if (direction != Direction.down) {
+                                      direction = Direction.up;
+                                    }
+                                  },
+                                  icon: const Icon(Icons.arrow_upward, size: 40),
+                                  color: colors['arrow'],
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    if (direction != Direction.up) {
+                                      direction = Direction.down;
+                                    }
+                                  },
+                                  icon: const Icon(Icons.arrow_downward, size: 40),
+                                  color: colors['arrow'],
+                                ),
+                              ],
                             ),
                             IconButton(
                               onPressed: () {
-                                if (direction != Direction.up) {
-                                  direction = Direction.down;
+                                if (direction != Direction.left) {
+                                  direction = Direction.right;
                                 }
                               },
-                              icon: const Icon(Icons.arrow_downward, size: 40),
+                              icon: const Icon(Icons.arrow_forward, size: 40),
                               color: colors['arrow'],
                             ),
                           ],
                         ),
-                        IconButton(
-                          onPressed: () {
-                            if (direction != Direction.left) {
-                              direction = Direction.right;
-                            }
-                          },
-                          icon: const Icon(Icons.arrow_forward, size: 40),
-                          color: colors['arrow'],
-                        ),
-                      ],
-                    ),
-            ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_snake_game/snake_game.dart%20';
-import '../snake_game.dart' as snake_game;
+import 'package:provider/provider.dart';
+import '../app_provider.dart';
+import '../snake_game.dart';
 
 class GameSettingsScreen extends StatefulWidget {
   const GameSettingsScreen({super.key});
@@ -97,7 +98,8 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                         setState(() {
                           _gridSize = val!;
                         });
-                      snake_game.SnakeGame();}
+                        context.read<AppProvider>().updateGridSize(val!);
+                        }
                   )
                 ],
               ),
@@ -114,20 +116,17 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
               Row(
                 children: [
                   // Snake Speed Radio Buttons
-                  _buildRadio('slow',
-                      'Slow',
-                      _snakeSpeed,
-                          (val) => setState(() => _snakeSpeed = val!)),
-                  const SizedBox(width: 16),
-                  _buildRadio('medium',
-                      'Medium',
-                      _snakeSpeed,
-                          (val) => setState(() => _snakeSpeed = val!)),
-                  const SizedBox(width: 16),
-                  _buildRadio('fast',
-                      'Fast',
-                      _snakeSpeed,
-                          (val) => setState(() => _snakeSpeed = val!)),
+                  _buildRadio<SnakeSpeed>(
+                      groupValue: _snakeSpeed,
+                      values: SnakeSpeed.values,
+                      labelBuilder: (val) => val.name,
+                      onChanged: (val) {
+                        setState(() {
+                          _snakeSpeed = val!;
+                        });
+                        context.read<AppProvider>().updateSnakeSpeed(val!);
+                      }
+                  )
                 ],
               ),
               const SizedBox(height: 20),
@@ -142,15 +141,18 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  _buildRadio('normal',
-                      'Normal',
-                      _appleSpawnRate,
-                          (val) => setState(() => _appleSpawnRate = val!)),
-                  const SizedBox(width: 16),
-                  _buildRadio('fast',
-                      'Fast',
-                      _appleSpawnRate,
-                          (val) => setState(() => _appleSpawnRate = val!)),
+                  // Apple Spawn Rate Radio Buttons
+                  _buildRadio<AppleSpawnRate>(
+                      groupValue: _appleSpawnRate,
+                      values: AppleSpawnRate.values,
+                      labelBuilder: (val) => val.name,
+                      onChanged: (val) {
+                        setState(() {
+                          _appleSpawnRate = val!;
+                        });
+                        context.read<AppProvider>().updateAppleSpawnRate(val!);
+                      }
+                  )
                 ],
               ),
               const SizedBox(height: 20),
@@ -165,21 +167,34 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  _buildRadio('retro',
-                      'Retro',
-                      _gameTheme,
-                          (val) => setState(() => _gameTheme = val!)),
-                  const SizedBox(width: 16),
-                  _buildRadio('dark',
-                      'Dark',
-                      _gameTheme,
-                          (val) => setState(() => _gameTheme = val!)),
-                  const SizedBox(width: 16),
-                  _buildRadio('light',
-                      'Light',
-                      _gameTheme,
-                          (val) => setState(() => _gameTheme = val!)),
+                  // Game Theme Radio Buttons
+                  _buildRadio<GameTheme>(
+                      groupValue: _gameTheme,
+                      values: GameTheme.values,
+                      labelBuilder: (val) => val.name,
+                      onChanged: (val) {
+                        setState(() {
+                          _gameTheme = val!;
+                        });
+                        context.read<AppProvider>().updateTheme(val!);
+                      }
+                  )
                 ],
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const SnakeGame()));
+                  },
+                  child: const Text(
+                    'Start Game',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
               ),
             ],
           ),

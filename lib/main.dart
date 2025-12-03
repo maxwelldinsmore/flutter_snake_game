@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'database.dart';
+import 'app_provider.dart';
 import 'screens/login_screen.dart';
 
 Future<void> main() async {
@@ -10,7 +12,12 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    //  Provider for state management
+      ChangeNotifierProvider(
+        create: (_) => AppProvider(),
+        child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
