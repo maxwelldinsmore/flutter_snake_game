@@ -11,15 +11,23 @@ class GameSettingsScreen extends StatefulWidget {
 }
 
 class _GameSettingsScreenState extends State<GameSettingsScreen> {
-  bool _soundEnabled = true;
-  bool _musicEnabled = true;
-  GridSize _gridSize = GridSize.medium;
-  SnakeSpeed _snakeSpeed = SnakeSpeed.medium;
-  AppleSpawnRate _appleSpawnRate = AppleSpawnRate.normal;
-  GameTheme _gameTheme = GameTheme.retro;
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AppProvider>();
+    if (provider.isLoading) {
+      return Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.black,
+          child: const Center(
+            child: CircularProgressIndicator(color: Color(0xFFE4FF19)),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -52,8 +60,8 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                     ),
                   ),
                   Switch(
-                    value: _soundEnabled,
-                    onChanged: (value) => setState(() => _soundEnabled = value),
+                    value: provider.soundEnabled,
+                    onChanged: (value) => context.read<AppProvider>().updateSoundEnabled(value),
                     activeColor: const Color(0xFFE4FF19),
                   ),
                 ],
@@ -71,8 +79,8 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                     ),
                   ),
                   Switch(
-                    value: _musicEnabled,
-                    onChanged: (value) => setState(() => _musicEnabled = value),
+                    value: provider.musicEnabled,
+                    onChanged: (value) => context.read<AppProvider>().updateMusicEnabled(value),
                     activeColor: const Color(0xFFE4FF19),
                   ),
                 ],
@@ -91,15 +99,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 children: [
                   // Grid Size Radio Buttons
                   _buildRadio<GridSize>(
-                      groupValue: _gridSize,
+                      groupValue: provider.currentGridSize,
                       values: GridSize.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) {
-                        setState(() {
-                          _gridSize = val!;
-                        });
-                        context.read<AppProvider>().updateGridSize(val!);
-                        }
+                      onChanged: (val) => context.read<AppProvider>().updateGridSize(val!)
                   )
                 ],
               ),
@@ -117,15 +120,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 children: [
                   // Snake Speed Radio Buttons
                   _buildRadio<SnakeSpeed>(
-                      groupValue: _snakeSpeed,
+                      groupValue: provider.currentSpeed,
                       values: SnakeSpeed.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) {
-                        setState(() {
-                          _snakeSpeed = val!;
-                        });
-                        context.read<AppProvider>().updateSnakeSpeed(val!);
-                      }
+                      onChanged: (val) => context.read<AppProvider>().updateSnakeSpeed(val!)
                   )
                 ],
               ),
@@ -143,15 +141,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 children: [
                   // Apple Spawn Rate Radio Buttons
                   _buildRadio<AppleSpawnRate>(
-                      groupValue: _appleSpawnRate,
+                      groupValue: provider.currentAppleSpawnRate,
                       values: AppleSpawnRate.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) {
-                        setState(() {
-                          _appleSpawnRate = val!;
-                        });
-                        context.read<AppProvider>().updateAppleSpawnRate(val!);
-                      }
+                      onChanged: (val) => context.read<AppProvider>().updateAppleSpawnRate(val!)
                   )
                 ],
               ),
@@ -169,15 +162,10 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 children: [
                   // Game Theme Radio Buttons
                   _buildRadio<GameTheme>(
-                      groupValue: _gameTheme,
+                      groupValue: provider.currentTheme,
                       values: GameTheme.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) {
-                        setState(() {
-                          _gameTheme = val!;
-                        });
-                        context.read<AppProvider>().updateTheme(val!);
-                      }
+                      onChanged: (val) => context.read<AppProvider>().updateTheme(val!)
                   )
                 ],
               ),
@@ -209,9 +197,12 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     required Function (T?) onChanged,
     required List<T> values,
     required String Function(T) labelBuilder}) {
-      return Column(
+      return Wrap(
+        spacing: 12,
+        runSpacing: 8,
         children: values.map((value) {
           return Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Radio<T>(
                 value: value,
