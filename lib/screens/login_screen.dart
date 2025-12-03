@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: _loading ? null : _login,
                     child: SvgPicture.asset(
-                      'assets/svg/login_button.svg',
+                      'lib/assets/svg/login_button.svg',
                       height: 60, // Increase height if needed
                     ),
                   ),
