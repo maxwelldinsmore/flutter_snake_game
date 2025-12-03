@@ -13,6 +13,7 @@ A new Flutter project making a snake game for our mobile development class.
 - Implement game settings (S)
 - add log out feature (B)
 - implement colour change of snake
+- Add exit button to game screen
 
 ## Optional Steps
 - sound effects
