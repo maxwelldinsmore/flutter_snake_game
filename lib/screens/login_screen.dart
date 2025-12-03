@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Log In',
+                    'Sign In',
                     style: TextStyle(
                       color: Color(0xFFE4FF19),
                       fontSize: 48,
@@ -79,15 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'log in',
-                    style: TextStyle(
-                      color: Color(0xFFE4FF19),
-                      fontSize: 36,
-                      fontFamily: 'arcade',
-                    ),
-                  ),
+                  // const SizedBox(height: 8),
+                  // const Text(
+                  //   'log in',
+                  //   style: TextStyle(
+                  //     color: Color(0xFFE4FF19),
+                  //     fontSize: 36,
+                  //     fontFamily: 'arcade',
+                  //   ),
+                  // ),
                   const SizedBox(height: 16),
                   const Text(
                     'Username',

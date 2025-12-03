@@ -7,6 +7,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'app_provider.dart';
+import 'screens/leaderboard_screen.dart';
+import 'screens/home_screen.dart';
 
 class SnakeGame extends StatefulWidget {
   const SnakeGame({Key? key}) : super(key: key);
@@ -66,18 +68,29 @@ class _SnakeGameState extends State<SnakeGame> {
     currentSpeed = _appProvider!.currentSpeed;
     currentAppleSpawnRate = _appProvider!.currentAppleSpawnRate;
     currentTheme = _appProvider!.currentTheme;
+    
+    // Apply initial grid size
+    setGridSize(currentGridSize);
 
     // Listen for settings changes.
     _appListener = () {
       setState(() {
-        currentGridSize = _appProvider!.currentGridSize;
-        setGridSize(currentGridSize);
-        currentSpeed = _appProvider!.currentSpeed;
-        setSnakeSpeed(currentSpeed);
-        currentAppleSpawnRate = _appProvider!.currentAppleSpawnRate;
-        setAppleSpawnRate(currentAppleSpawnRate);
-        currentTheme = _appProvider!.currentTheme;
-        setTheme(currentTheme);
+        if (currentGridSize != _appProvider!.currentGridSize) {
+          currentGridSize = _appProvider!.currentGridSize;
+          setGridSize(currentGridSize);
+        }
+        if (currentSpeed != _appProvider!.currentSpeed) {
+          currentSpeed = _appProvider!.currentSpeed;
+          setSnakeSpeed(currentSpeed);
+        }
+        if (currentAppleSpawnRate != _appProvider!.currentAppleSpawnRate) {
+          currentAppleSpawnRate = _appProvider!.currentAppleSpawnRate;
+          setAppleSpawnRate(currentAppleSpawnRate);
+        }
+        if (currentTheme != _appProvider!.currentTheme) {
+          currentTheme = _appProvider!.currentTheme;
+          setTheme(currentTheme);
+        }
       });
     };
       _appProvider!.addListener(_appListener!);
@@ -113,6 +126,18 @@ class _SnakeGameState extends State<SnakeGame> {
           break;
       }
       totalSquares = gridRows * gridCols;
+
+      // Reset snake position based on new grid size
+      int centerRow = gridRows ~/ 2;
+      int centerCol = gridCols ~/ 2;
+      int centerPos = centerRow * gridCols + centerCol;
+      snakePosition = [centerPos, centerPos - 1, centerPos - 2];
+      
+      // Reset food position
+      foodPosition = Random().nextInt(totalSquares);
+      while (snakePosition.contains(foodPosition)) {
+        foodPosition = Random().nextInt(totalSquares);
+      }
 
       // Reset game if it's running.
       if (gameStarted) {
@@ -238,7 +263,12 @@ class _SnakeGameState extends State<SnakeGame> {
   void startGame() {
     setState(() {
       gameStarted = true;
-      snakePosition = [45, 44, 43];
+      // Calculate center position based on current grid size
+      int centerRow = gridRows ~/ 2;
+      int centerCol = gridCols ~/ 2;
+      int centerPos = centerRow * gridCols + centerCol;
+      snakePosition = [centerPos, centerPos - 1, centerPos - 2];
+      
       foodPosition = Random().nextInt(totalSquares);
       while (snakePosition.contains(foodPosition)) {
         foodPosition = Random().nextInt(totalSquares);
@@ -350,15 +380,56 @@ class _SnakeGameState extends State<SnakeGame> {
     if (currentScore > highScore) {
       highScore = currentScore;
     }
+    
+    final colors = getThemeColors();
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Game Over'),
-          content: Text('Your score: $currentScore'),
+          backgroundColor: colors['panel'],
+          title: Text(
+            'Game Over',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: colors['labelText'],
+              fontSize: 32,
+              fontFamily: 'arcade',
+            ),
+          ),
+          content: Text(
+            'Your score: $currentScore',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: colors['scoreText'],
+              fontSize: 24,
+              fontFamily: 'arcade',
+            ),
+          ),
           actions: [
+            // Back to Home button
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                );
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: colors['button'],
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text(
+                'Home',
+                style: TextStyle(
+                  color: colors['buttonText'],
+                  fontSize: 18,
+                  fontFamily: 'arcade',
+                ),
+              ),
+            ),
+            // Play Again button
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -366,7 +437,40 @@ class _SnakeGameState extends State<SnakeGame> {
                   gameStarted = false;
                 });
               },
-              child: const Text('Play Again'),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text(
+                'Play Again!',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: 'arcade',
+                ),
+              ),
+            ),
+            // Leaderboard button
+            TextButton(
+              onPressed: () {
+                // Close dialog and navigate to leaderboard.
+                Navigator.of(context).pop(); 
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
+                );
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: colors['button'],
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text(
+                'Leaderboard',
+                style: TextStyle(
+                  color: colors['buttonText'],
+                  fontSize: 18,
+                  fontFamily: 'arcade',
+                ),
+              ),
             ),
           ],
         );
@@ -390,6 +494,25 @@ class _SnakeGameState extends State<SnakeGame> {
 
         return Scaffold(
           backgroundColor: colors['background'],
+          appBar: AppBar(
+            backgroundColor: colors['panel'],
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: colors['labelText']),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                );
+              },
+            ),
+            title: Text(
+              'Snake Game',
+              style: TextStyle(
+                color: colors['labelText'],
+                fontFamily: 'arcade',
+              ),
+            ),
+            centerTitle: true,
+          ),
           body: Column(
             children: [
               // High score display at the top
@@ -407,6 +530,7 @@ class _SnakeGameState extends State<SnakeGame> {
                             style: TextStyle(
                               color: colors['labelText'],
                               fontSize: 16,
+                              fontFamily: 'arcade',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -415,6 +539,7 @@ class _SnakeGameState extends State<SnakeGame> {
                             style: TextStyle(
                               color: colors['scoreText'],
                               fontSize: 32,
+                              fontFamily: 'arcade',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -428,6 +553,7 @@ class _SnakeGameState extends State<SnakeGame> {
                             style: TextStyle(
                               color: colors['labelText'],
                               fontSize: 16,
+                              fontFamily: 'arcade',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -436,6 +562,7 @@ class _SnakeGameState extends State<SnakeGame> {
                             style: TextStyle(
                               color: colors['scoreText'],
                               fontSize: 32,
+                              fontFamily: 'arcade',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
