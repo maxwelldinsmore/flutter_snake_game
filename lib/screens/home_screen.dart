@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
 import '../snake_game.dart';
+import '../database.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final Function(int)? onTabChange;
   const HomeScreen({super.key, this.onTabChange});
+
+  Future<void> _signOut(BuildContext context) async {
+    final db = DatabaseService();
+    try {
+      await db.logout();
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+              (Route<dynamic> route) => false,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error signing out: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +62,24 @@ class HomeScreen extends StatelessWidget {
               onTabChange?.call(3); // Navigate to leaderboard tab (index 3)
             }),
             const Spacer(),
+            // --- Sign Out Button ---
+            Positioned(
+              bottom: 30,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: () => _signOut(context),
+                child: const Text(
+                  'sign out',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontFamily: 'arcade',
+                  ),
+                ),
+              ),
+            ),
             const Text(
               'made by alyssa - maxwell - bilgan - shanice',
               style: TextStyle(

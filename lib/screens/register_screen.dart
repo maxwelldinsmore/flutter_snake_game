@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -128,13 +129,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Text(_error!, style: const TextStyle(color: Colors.red)),
                     const SizedBox(height: 8),
                   ],
-                  ElevatedButton(
-                    onPressed: _loading ? null : _register,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE4FF19),
-                      foregroundColor: Colors.black,
+                  // --- SVG Sign Up Button ---
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterScreen()));
+                    },
+                    child: SvgPicture.asset(
+                      'assets/svg/signup_button.svg',
+                      height: 60, // Increase height if needed
                     ),
-                    child: _loading ? const CircularProgressIndicator() : const Text('SIGN UP', style: TextStyle(fontSize: 24)),
                   ),
                 ],
               ),

@@ -3,6 +3,8 @@ import '../database.dart';
 import 'register_screen.dart';
 import 'main_screen.dart';
 import '../tempdata.dart' as temp_data;
+import 'package:flutter_svg/flutter_svg.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -140,14 +142,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(_error!, style: const TextStyle(color: Colors.red)),
                     const SizedBox(height: 8),
                   ],
-                  ElevatedButton(
-                    onPressed: _loading ? null : _login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE4FF19),
-                      foregroundColor: Colors.black,
+                  // --- SVG Login Button ---
+                  GestureDetector(
+                    onTap: _loading ? null : _login,
+                    child: SvgPicture.asset(
+                      'assets/svg/login_button.svg',
+                      height: 60, // Increase height if needed
                     ),
-                    child: _loading ? const CircularProgressIndicator() : const Text('LOG IN', style: TextStyle(fontSize: 24)),
                   ),
+                  const SizedBox(height: 20), // spacing
                 ],
               ),
             ),

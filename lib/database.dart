@@ -69,4 +69,9 @@ class DatabaseService {
     return result;
   }//NOTE: Store ID after login in app for easier refetch
 
+  // log out function
+  Future<void> logout() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
+
 }
