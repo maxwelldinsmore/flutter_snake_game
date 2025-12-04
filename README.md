@@ -1,14 +1,17 @@
-# flutter_snake_game
+# 🐍 Snake Game
 
-A new Flutter project making a snake game for our mobile development class.
+A retro-style snake game built with Flutter. Eat apples, grow longer, don't hit yourself!
 
-- example login max
-- example password test123
-## Next Steps
+## 🎮 Testing User
+- **Username:** max
+- **Password:** test123
 
+## ✨ Features
+- 🎨 Customizable snake colours (green, pink, purple, blue)
+- 🎯 Multiple game themes (retro, dark, light)
+- ⚡ Adjustable snake speed & grid size
+- 🍎 Variable apple spawn rates
+- 🏆 Leaderboard tracking
 
-## Done
-~~- fix database issue of two users with same name~~ Max
-~~- add log out feature~~ Bilgan
-~~- Fix game UI~~ Bilgan
-~~- implement colour change of snake~~ Alyssa
+---
+*Built for Mobile Development Class*
