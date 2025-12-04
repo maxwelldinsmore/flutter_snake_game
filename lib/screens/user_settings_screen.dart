@@ -9,6 +9,8 @@ class UserSettingsScreen extends StatefulWidget {
   State<UserSettingsScreen> createState() => _UserSettingsScreenState();
 }
 
+enum SnakeColour { green, pink, purple, blue }
+
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   final _usernameCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
@@ -178,18 +180,52 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 ),
               ),
               const SizedBox(height: 6),
-              TextField(
-                controller: _colourCtrl,
-                keyboardType: TextInputType.visiblePassword,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Color(0xFFF4FAC5),
-                  hintText: 'Enter password',
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                  contentPadding: EdgeInsets.all(10),
-                ),
+              Row(
+                children: [
+                  // Snake Colour Radio Buttons
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: SnakeColour.values.map((value) {
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: value.name,
+                            groupValue: _currentColour,
+                            activeColor: const Color(0xFFE4FF19),
+                            onChanged: (val) {
+                              setState(() {
+                                _currentColour = val!;
+                              });
+                            },
+                          ),
+                          Text(
+                            value.name,
+                            style: const TextStyle(
+                              color: Color(0xFFF4FAC5),
+                              fontSize: 20,
+                              fontFamily: 'arcade',
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  )
+                ],
               ),
+              // TextField(
+              //   controller: _colourCtrl,
+              //   keyboardType: TextInputType.visiblePassword,
+              //   style: const TextStyle(color: Colors.black),
+              //   decoration: const InputDecoration(
+              //     filled: true,
+              //     fillColor: Color(0xFFF4FAC5),
+              //     hintText: 'Enter password',
+              //     border: OutlineInputBorder(borderSide: BorderSide.none),
+              //     contentPadding: EdgeInsets.all(10),
+              //   ),
+              // ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveSettings,
