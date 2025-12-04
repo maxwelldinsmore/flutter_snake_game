@@ -67,8 +67,8 @@ flutter:
       - lib/assets/svg/signup_button.svg
       - lib/assets/svg/Snakelogo.png
       - lib/assets/svg/Snakelogo2.png
-      - assets/audio/snake-food-music.mp3
-      - assets/audio/8-bit-music.mp3
+      - lib/assets/audio/snake-food-music.mp3
+      - lib/assets/audio/8-bit-music.mp3
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
