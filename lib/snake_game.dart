@@ -5,11 +5,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_snake_game/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'app_provider.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/home_screen.dart';
-
+import '../tempdata.dart' as temp_data;
+import '../database.dart'; 
 class SnakeGame extends StatefulWidget {
   const SnakeGame({Key? key}) : super(key: key);
 
@@ -290,12 +292,29 @@ class _SnakeGameState extends State<SnakeGame> {
         timer.cancel();
         gameStarted = false;
         showGameOverDialog();
+        updateDBScore();
         return;
       }
 
       // Update snake position.
       updateSnake();
     });
+  }
+  // Updates the players highscore in the database if current is better than prev highscore
+  void updateDBScore() async {
+    final db = DatabaseService();
+    try {
+      final userId = temp_data.userId;
+      if (userId != null) {
+        final userdata = await db.getUserdataById(userId);
+        final existingScore = userdata?['score'] ?? 0;
+        if (currentScore > existingScore) {
+          await db.updateUserdata(userId, {'score': currentScore});
+        }
+      }
+    } catch (e) {
+      // Handle error silently for now
+    }
   }
 
   //  This method updates the snake's position based on the current direction.
@@ -413,7 +432,7 @@ class _SnakeGameState extends State<SnakeGame> {
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  MaterialPageRoute(builder: (_) => const MainScreen()),
                 );
               },
               style: TextButton.styleFrom(
