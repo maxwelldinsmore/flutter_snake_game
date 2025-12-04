@@ -29,8 +29,13 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
+          width: double.infinity,
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
           color: Colors.black,
           padding: const EdgeInsets.all(24.0),
           child: Column(
@@ -47,142 +52,161 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 25),
+              // const SizedBox(height: 20),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     const Text(
+              //       'Sound',
+              //       style: TextStyle(
+              //         color: Color(0xFFE4FF19),
+              //         fontSize: 36,
+              //         fontFamily: 'arcade',
+              //       ),
+              //     ),
+              //     Switch(
+              //       value: provider.soundEnabled,
+              //       onChanged: (value) => context.read<AppProvider>().updateSoundEnabled(value),
+              //       activeColor: const Color(0xFFE4FF19),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 12),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     const Text(
+              //       'Music',
+              //       style: TextStyle(
+              //         color: Color(0xFFE4FF19),
+              //         fontSize: 36,
+              //         fontFamily: 'arcade',
+              //       ),
+              //     ),
+              //     Switch(
+              //       value: provider.musicEnabled,
+              //       onChanged: (value) => context.read<AppProvider>().updateMusicEnabled(value),
+              //       activeColor: const Color(0xFFE4FF19),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Sound',
-                    style: TextStyle(
-                      color: Color(0xFFE4FF19),
-                      fontSize: 36,
-                      fontFamily: 'arcade',
-                    ),
+              const Center(
+                child: Text(
+                  'Grid  Size',
+                  style: TextStyle(
+                    color: Color(0xFF006400),
+                    fontSize: 36,
+                    fontFamily: 'arcade',
                   ),
-                  Switch(
-                    value: provider.soundEnabled,
-                    onChanged: (value) => context.read<AppProvider>().updateSoundEnabled(value),
-                    activeColor: const Color(0xFFE4FF19),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Music',
-                    style: TextStyle(
-                      color: Color(0xFFE4FF19),
-                      fontSize: 36,
-                      fontFamily: 'arcade',
-                    ),
-                  ),
-                  Switch(
-                    value: provider.musicEnabled,
-                    onChanged: (value) => context.read<AppProvider>().updateMusicEnabled(value),
-                    activeColor: const Color(0xFFE4FF19),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Grid  Size',
-                style: TextStyle(
-                  color: Color(0xFFE4FF19),
-                  fontSize: 36,
-                  fontFamily: 'arcade',
                 ),
               ),
               const SizedBox(height: 8),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Grid Size Radio Buttons
                   _buildRadio<GridSize>(
                       groupValue: provider.currentGridSize,
                       values: GridSize.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) => context.read<AppProvider>().updateGridSize(val!)
+                      onChanged: (val) => context.read<AppProvider>().updateGridSize(val!),
+                      textColor: const Color(0xFF006400), // Dark green
                   )
                 ],
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Snake  Speed',
-                style: TextStyle(
-                  color: Color(0xFFE4FF19),
-                  fontSize: 36,
-                  fontFamily: 'arcade',
+              const Center(
+                child: Text(
+                  'Snake  Speed',
+                  style: TextStyle(
+                    color: Color(0xFF00008B),
+                    fontSize: 36,
+                    fontFamily: 'arcade',
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Snake Speed Radio Buttons
                   _buildRadio<SnakeSpeed>(
                       groupValue: provider.currentSpeed,
                       values: SnakeSpeed.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) => context.read<AppProvider>().updateSnakeSpeed(val!)
+                      onChanged: (val) => context.read<AppProvider>().updateSnakeSpeed(val!),
+                      textColor: const Color(0xFF87CEEB), // Light blue
                   )
                 ],
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Apple  Spawn  Rate',
-                style: TextStyle(
-                  color: Color(0xFFE4FF19),
-                  fontSize: 36,
-                  fontFamily: 'arcade',
+              const Center(
+                child: Text(
+                  'Apple  Spawn  Rate',
+                  style: TextStyle(
+                    color: Color(0xFFFF0000),
+                    fontSize: 36,
+                    fontFamily: 'arcade',
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Apple Spawn Rate Radio Buttons
                   _buildRadio<AppleSpawnRate>(
                       groupValue: provider.currentAppleSpawnRate,
                       values: AppleSpawnRate.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) => context.read<AppProvider>().updateAppleSpawnRate(val!)
+                      onChanged: (val) => context.read<AppProvider>().updateAppleSpawnRate(val!),
+                      textColor: const Color(0xFFFF69B4), // Pink
                   )
                 ],
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Game  Theme',
-                style: TextStyle(
-                  color: Color(0xFFE4FF19),
-                  fontSize: 36,
-                  fontFamily: 'arcade',
+              const Center(
+                child: Text(
+                  'Game  Theme',
+                  style: TextStyle(
+                    color: Color(0xFF4B0082),
+                    fontSize: 36,
+                    fontFamily: 'arcade',
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Game Theme Radio Buttons
                   _buildRadio<GameTheme>(
                       groupValue: provider.currentTheme,
                       values: GameTheme.values,
                       labelBuilder: (val) => val.name,
-                      onChanged: (val) => context.read<AppProvider>().updateTheme(val!)
+                      onChanged: (val) => context.read<AppProvider>().updateTheme(val!),
+                      textColor: const Color(0xFF9370DB), // Purple
                   )
                 ],
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const SnakeGame()));
-                  },
-                  child: const Text(
-                    'Start Game',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontFamily: 'arcade',
+              const SizedBox(height: 45),
+              Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const SnakeGame()));
+                    },
+                    child: const Text(
+                      'Start Game',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontFamily: 'arcade',
+                      ),
                     ),
-                  ),
+                ),
               ),
             ],
           ),
@@ -196,7 +220,9 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
   Widget _buildRadio<T extends Enum>({required T groupValue,
     required Function (T?) onChanged,
     required List<T> values,
-    required String Function(T) labelBuilder}) {
+    required String Function(T) labelBuilder,
+    Color textColor = const Color(0xFFE4FF19), // Default yellow, now customizable
+  }) {
       return Wrap(
         spacing: 12,
         runSpacing: 8,
@@ -208,12 +234,12 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                 value: value,
                 groupValue: groupValue,
                 onChanged: onChanged,
-                activeColor: const Color(0xFFE4FF19),
+                activeColor: textColor,
               ),
               Text(
                 labelBuilder(value),
-                style: const TextStyle(
-                  color: Color(0xFFE4FF19),
+                style: TextStyle(
+                  color: textColor,
                   fontSize: 24,
                   fontFamily: 'arcade',
                 ),
