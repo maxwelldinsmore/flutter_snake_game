@@ -55,6 +55,8 @@ class _SnakeGameState extends State<SnakeGame> {
   int currentScore = 0;
   int highScore = 0;
 
+  
+
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -82,6 +84,9 @@ class _SnakeGameState extends State<SnakeGame> {
     
     // Apply initial grid size
     setGridSize(currentGridSize);
+
+    //updates high score from database
+    fetchHighScore();
 
     // Listen for settings changes.
     _appListener = () {
@@ -169,6 +174,22 @@ class _SnakeGameState extends State<SnakeGame> {
   //     }
   //   }
   // }
+
+  void fetchHighScore() async {
+    final db = DatabaseService();
+    try {
+      final userId = temp_data.userId;
+      if (userId != null) {
+        final userdata = await db.getUserdataById(userId);
+        final existingScore = userdata?['score'] ?? 0;
+        setState(() {
+          highScore = existingScore;
+        });
+      }
+    } catch (e) {
+      // Handle error silently for now
+    }
+  }
 
   // Method to update grid size.
   //!! Settings should call this method when user changes grid size
