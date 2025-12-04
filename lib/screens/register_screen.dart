@@ -51,6 +51,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          // SNAKE Logo at the top
+          Positioned(
+            top: 60,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'lib/assets/svg/SnakeLogo2.png',
+                height: 150,
+              ),
+            ),
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
@@ -60,21 +72,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const Text(
                     'Sign Up',
                     style: TextStyle(
-                      color: Color(0xFFE4FF19),
+                      color: Color(0xFFFF0000),
                       fontSize: 48,
                       fontFamily: 'arcade',
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'sign up',
-                    style: TextStyle(
-                      color: Color(0xFFE4FF19),
-                      fontSize: 36,
-                      fontFamily: 'arcade',
-                    ),
-                  ),
+                  // const SizedBox(height: 8),
+                  // const Text(
+                  //   'sign up',
+                  //   style: TextStyle(
+                  //     color: Color(0xFFE4FF19),
+                  //     fontSize: 36,
+                  //     fontFamily: 'arcade',
+                  //   ),
+                  // ),
                   const SizedBox(height: 16),
                   const Text(
                     'Username',
@@ -134,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onTap: _loading ? null : _register,
                     child: SvgPicture.asset(
                       'lib/assets/svg/signup_button.svg',
-                      height: 60, // Increase height if needed
+                      height: 45, // Increase height if needed
                     ),
                   ),
                 ],
