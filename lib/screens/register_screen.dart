@@ -31,6 +31,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       final username = _usernameCtrl.text.trim();
       final password = _passwordCtrl.text;
+      if (username.isEmpty || password.isEmpty) {
+        setState(() {
+          _error = 'Username and password cannot be empty';
+          _loading = false;
+        });
+        return;
+      }
       await _db.createUserdata({'username': username, 'password': password});
       if (!mounted) return;
       Navigator.of(context).pop();
