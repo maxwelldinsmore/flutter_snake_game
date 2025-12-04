@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import '../snake_game.dart';
-import '../database.dart';
 import 'login_screen.dart';
-
+import '../tempdata.dart' as temp_data;
 class HomeScreen extends StatelessWidget {
   final Function(int)? onTabChange;
   const HomeScreen({super.key, this.onTabChange});
 
   Future<void> _signOut(BuildContext context) async {
-    final db = DatabaseService();
+
     try {
-      await db.logout();
+      temp_data.isLoggedIn = false;
+      temp_data.currentUsername = 'null';
+      temp_data.userId = '';
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginScreen()),
