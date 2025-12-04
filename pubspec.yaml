@@ -65,10 +65,10 @@ flutter:
   assets:
       - lib/assets/svg/login_button.svg
       - lib/assets/svg/signup_button.svg
-      - lib/assets/svg/Snakelogo.png
-      - lib/assets/svg/Snakelogo2.png
-      - lib/assets/audio/snake-food-music.mp3
-      - lib/assets/audio/8-bit-music.mp3
+      - lib/assets/svg/SnakeLogo.png
+      - lib/assets/svg/SnakeLogo2.png
+      # - lib/assets/audio/snake-food-music.mp3
+      # - lib/assets/audio/8-bit-music.mp3
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

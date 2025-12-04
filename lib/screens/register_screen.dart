@@ -133,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   GestureDetector(
                     onTap: _loading ? null : _register,
                     child: SvgPicture.asset(
-                      'assets/svg/signup_button.svg',
+                      'lib/assets/svg/signup_button.svg',
                       height: 60, // Increase height if needed
                     ),
                   ),
