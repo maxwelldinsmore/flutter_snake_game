@@ -29,11 +29,37 @@ class DatabaseService {
 
   // Create user
   Future<DocumentReference> createUserdata(Map<String, dynamic> data) async {
+    // Check if username already exists
+    if (data.containsKey('username')) {
+      final existingUser = await _firestore
+          .collection('userdata')
+          .where('username', isEqualTo: data['username'])
+          .limit(1)
+          .get();
+      
+      if (existingUser.docs.isNotEmpty) {
+        throw Exception('Username already exists');
+      }
+    }
+    
     return await _firestore.collection('userdata').add(data);
   }
 
   // Update data, based on ID
   Future<void> updateUserdata(String id, Map<String, dynamic> data) async {
+    // Check if username already exists (excluding current user)
+    if (data.containsKey('username')) {
+      final existingUser = await _firestore
+          .collection('userdata')
+          .where('username', isEqualTo: data['username'])
+          .limit(1)
+          .get();
+      
+      if (existingUser.docs.isNotEmpty && existingUser.docs.first.id != id) {
+        throw Exception('Username already exists');
+      }
+    }
+    
     await _firestore.collection('userdata').doc(id).update(data);
   }
 

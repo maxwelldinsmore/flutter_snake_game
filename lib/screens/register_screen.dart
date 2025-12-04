@@ -131,9 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                   // --- SVG Sign Up Button ---
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterScreen()));
-                    },
+                    onTap: _loading ? null : _register,
                     child: SvgPicture.asset(
                       'assets/svg/signup_button.svg',
                       height: 60, // Increase height if needed
