@@ -111,7 +111,7 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                       values: GridSize.values,
                       labelBuilder: (val) => val.name,
                       onChanged: (val) => context.read<AppProvider>().updateGridSize(val!),
-                      textColor: const Color(0xFF006400), // Dark green
+                      textColor: const Color(0xFF90EE90), // Light green
                   )
                 ],
               ),
@@ -190,6 +190,57 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
                   )
                 ],
               ),
+              const SizedBox(height: 20),
+              const Center(
+                child: Text(
+                  'Snake  Color',
+                  style: TextStyle(
+                    color: Color(0xFFE4FF19),
+                    fontSize: 36,
+                    fontFamily: 'arcade',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: [
+                      _buildColorRadio(
+                        value: SnakeColor.green,
+                        groupValue: provider.currentSnakeColor,
+                        onChanged: (val) => context.read<AppProvider>().updateSnakeColor(val!),
+                        label: 'green',
+                        color: const Color(0xFF90EE90), // Light green
+                      ),
+                      _buildColorRadio(
+                        value: SnakeColor.pink,
+                        groupValue: provider.currentSnakeColor,
+                        onChanged: (val) => context.read<AppProvider>().updateSnakeColor(val!),
+                        label: 'pink',
+                        color: const Color(0xFFFF69B4), // Hot pink
+                      ),
+                      _buildColorRadio(
+                        value: SnakeColor.purple,
+                        groupValue: provider.currentSnakeColor,
+                        onChanged: (val) => context.read<AppProvider>().updateSnakeColor(val!),
+                        label: 'purple',
+                        color: const Color(0xFF9370DB), // Medium purple
+                      ),
+                      _buildColorRadio(
+                        value: SnakeColor.blue,
+                        groupValue: provider.currentSnakeColor,
+                        onChanged: (val) => context.read<AppProvider>().updateSnakeColor(val!),
+                        label: 'blue',
+                        color: const Color(0xFF87CEEB), // Light blue
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               const SizedBox(height: 45),
               Center(
                 child: ElevatedButton(
@@ -247,5 +298,34 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
           );
           }).toList(),
       );
+  }
+
+  // Build colored radio button for snake colors
+  Widget _buildColorRadio({
+    required SnakeColor value,
+    required SnakeColor groupValue,
+    required Function(SnakeColor?) onChanged,
+    required String label,
+    required Color color,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Radio<SnakeColor>(
+          value: value,
+          groupValue: groupValue,
+          onChanged: onChanged,
+          activeColor: color,
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: color,
+            fontSize: 24,
+            fontFamily: 'arcade',
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -10,6 +10,7 @@ enum GridSize { small, medium, large }
 enum SnakeSpeed { slow, medium, fast }
 enum AppleSpawnRate { normal, fast }
 enum GameTheme { retro, dark, light }
+enum SnakeColor { green, pink, purple, blue }
 
 class AppProvider extends ChangeNotifier {
   // database service instance to save to db when settings are changed
@@ -24,6 +25,7 @@ class AppProvider extends ChangeNotifier {
   SnakeSpeed currentSpeed = SnakeSpeed.medium;
   AppleSpawnRate currentAppleSpawnRate = AppleSpawnRate.normal;
   GameTheme currentTheme = GameTheme.retro;
+  SnakeColor currentSnakeColor = SnakeColor.green;
 
   // load data from the database
   AppProvider(){
@@ -59,6 +61,9 @@ class AppProvider extends ChangeNotifier {
       currentTheme = GameTheme.values.firstWhere(
               (e) => e.name == data['gameTheme'],
           orElse: () => currentTheme);
+      currentSnakeColor = SnakeColor.values.firstWhere(
+              (e) => e.name == data['snakeColor'],
+          orElse: () => currentSnakeColor);
       }
     } catch (e) {
       log('Error loading user data: $e');
@@ -86,6 +91,7 @@ class AppProvider extends ChangeNotifier {
         'snakeSpeed': currentSpeed.name,
         'appleSpawnRate': currentAppleSpawnRate.name,
         'gameTheme': currentTheme.name,
+        'snakeColor': currentSnakeColor.name,
       });
     } catch (e) {
       log('Error saving user data: $e');
@@ -123,6 +129,15 @@ class AppProvider extends ChangeNotifier {
   void updateTheme(GameTheme newTheme) {
     if (currentTheme != newTheme) {
       currentTheme = newTheme;
+      notifyListeners(); // Notify listeners of the change
+      _scheduleSave();
+    }
+  }
+
+  // method to update snake color
+  void updateSnakeColor(SnakeColor newColor) {
+    if (currentSnakeColor != newColor) {
+      currentSnakeColor = newColor;
       notifyListeners(); // Notify listeners of the change
       _scheduleSave();
     }

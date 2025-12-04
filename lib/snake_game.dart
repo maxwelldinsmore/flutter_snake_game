@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'app_provider.dart';
 import 'screens/leaderboard_screen.dart';
+import 'screens/home_screen.dart';
 import '../tempdata.dart' as temp_data;
 import '../database.dart'; 
 
@@ -33,6 +34,7 @@ class _SnakeGameState extends State<SnakeGame> {
   SnakeSpeed currentSpeed = SnakeSpeed.medium;
   AppleSpawnRate currentAppleSpawnRate = AppleSpawnRate.normal;
   GameTheme currentTheme = GameTheme.retro;
+  SnakeColor currentSnakeColor = SnakeColor.green;
   AppProvider? _appProvider;
   VoidCallback? _appListener;
   
@@ -78,6 +80,7 @@ class _SnakeGameState extends State<SnakeGame> {
     currentSpeed = _appProvider!.currentSpeed;
     currentAppleSpawnRate = _appProvider!.currentAppleSpawnRate;
     currentTheme = _appProvider!.currentTheme;
+    currentSnakeColor = _appProvider!.currentSnakeColor;
     
     // Apply initial grid size
     setGridSize(currentGridSize);
@@ -100,6 +103,9 @@ class _SnakeGameState extends State<SnakeGame> {
         if (currentTheme != _appProvider!.currentTheme) {
           currentTheme = _appProvider!.currentTheme;
           setTheme(currentTheme);
+        }
+        if (currentSnakeColor != _appProvider!.currentSnakeColor) {
+          currentSnakeColor = _appProvider!.currentSnakeColor;
         }
         // Update audio when settings change
         // _updateAudioSettings();
@@ -235,9 +241,38 @@ class _SnakeGameState extends State<SnakeGame> {
     });
   }
 
+  // Get custom snake colors based on selected color
+  Map<String, Color> getSnakeColors() {
+    switch (currentSnakeColor) {
+      case SnakeColor.green:
+        return {
+          'snakeHead': Color(0xFF00FF41), // Bright neon green
+          'snakeBody': Color(0xFF39FF14), // Lime green
+        };
+      case SnakeColor.pink:
+        return {
+          'snakeHead': Color(0xFFFF69B4), // Hot pink
+          'snakeBody': Color(0xFFFFB6C1), // Light pink
+        };
+      case SnakeColor.purple:
+        return {
+          'snakeHead': Color(0xFFBF40BF), // Bright purple
+          'snakeBody': Color(0xFF9370DB), // Medium purple
+        };
+      case SnakeColor.blue:
+        return {
+          'snakeHead': Color(0xFF00D9FF), // Cyan
+          'snakeBody': Color(0xFF0099CC), // Deep cyan
+        };
+    }
+  }
+
   // Get theme colors based on current theme.
   // !! Settings should call this method when user changes theme.
   Map<String, Color> getThemeColors() {
+    // Get custom snake colors
+    final snakeColors = getSnakeColors();
+    
     switch (currentTheme) {
       case GameTheme.retro:
         return {
@@ -245,8 +280,8 @@ class _SnakeGameState extends State<SnakeGame> {
           'panel': Color(0xFF1B263B), // Dark blue-grey
           'labelText': Color(0xFF00D9FF), // Cyan
           'scoreText': Color(0xFFFFD700), // Gold
-          'snakeHead': Color(0xFF00FF41), // Bright neon green
-          'snakeBody': Color(0xFF39FF14), // Lime green
+          'snakeHead': snakeColors['snakeHead']!,
+          'snakeBody': snakeColors['snakeBody']!,
           'food': Color(0xFFFF006E), // Hot pink
           'gridEmpty': Color(0xFF0D1B2A), // Deep navy
           'gridLine': Color(0xFF1B263B), // Dark blue-grey
@@ -260,8 +295,8 @@ class _SnakeGameState extends State<SnakeGame> {
           'panel': Color(0xFF1A1A1A), // Dark grey
           'labelText': Color(0xFFAAAAAA), // Light grey
           'scoreText': Color(0xFFFFFFFF), // White
-          'snakeHead': Color(0xFF00FF00), // Bright green
-          'snakeBody': Color(0xFF008000), // Green
+          'snakeHead': snakeColors['snakeHead']!,
+          'snakeBody': snakeColors['snakeBody']!,
           'food': Color(0xFFFF0000), // Red
           'gridEmpty': Color(0xFF000000), // Black
           'gridLine': Color(0xFF333333), // Dark grey
@@ -275,8 +310,8 @@ class _SnakeGameState extends State<SnakeGame> {
           'panel': Color(0xFFE0E0E0), // Medium grey
           'labelText': Color(0xFF424242), // Dark grey
           'scoreText': Color(0xFF000000), // Black
-          'snakeHead': Color(0xFF2E7D32), // Dark green
-          'snakeBody': Color(0xFF66BB6A), // Light green
+          'snakeHead': snakeColors['snakeHead']!,
+          'snakeBody': snakeColors['snakeBody']!,
           'food': Color(0xFFE53935), // Red
           'gridEmpty': Color(0xFFFFFFFF), // White
           'gridLine': Color(0xFFBDBDBD), // Grey
@@ -536,7 +571,7 @@ class _SnakeGameState extends State<SnakeGame> {
                 // Close dialog and navigate to leaderboard.
                 Navigator.of(context).pop(); 
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const MainScreen()),
+                  MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
                 );
               },
               style: TextButton.styleFrom(
