@@ -521,69 +521,77 @@ class _SnakeGameState extends State<SnakeGame> {
             ),
           ),
           actions: [
-            // Back to Home button
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close dialog
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const MainScreen()),
-                );
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: colors['button'],
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              ),
-              child: Text(
-                'Home',
-                style: TextStyle(
-                  color: colors['buttonText'],
-                  fontSize: 18,
-                  fontFamily: 'arcade',
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Play Again button
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      gameStarted = false;
+                    });
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  child: Text(
+                    'Play Again!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            // Play Again button
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  gameStarted = false;
-                });
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              ),
-              child: Text(
-                'Play Again!',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontFamily: 'arcade',
+                const SizedBox(height: 8),
+                // Back to Home button
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close dialog
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => const MainScreen()),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: colors['button'],
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  child: Text(
+                    'Home',
+                    style: TextStyle(
+                      color: colors['buttonText'],
+                      fontSize: 18,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            // Leaderboard button
-            TextButton(
-              onPressed: () {
-                // Close dialog and navigate to leaderboard.
-                Navigator.of(context).pop(); 
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const MainScreen(initialTab: 3)),
-                );
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: colors['button'],
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              ),
-              child: Text(
-                'Leaderboard',
-                style: TextStyle(
-                  color: colors['buttonText'],
-                  fontSize: 18,
-                  fontFamily: 'arcade',
+                const SizedBox(height: 8),
+                // Leaderboard button
+                TextButton(
+                  onPressed: () {
+                    // Close dialog and navigate to leaderboard.
+                    Navigator.of(context).pop(); 
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => const MainScreen(initialTab: 3)),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: colors['button'],
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  child: Text(
+                    'Leaderboard',
+                    style: TextStyle(
+                      color: colors['buttonText'],
+                      fontSize: 18,
+                      fontFamily: 'arcade',
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         );
