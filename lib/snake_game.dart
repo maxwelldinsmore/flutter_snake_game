@@ -9,8 +9,6 @@ import 'package:flutter_snake_game/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'app_provider.dart';
-import 'screens/leaderboard_screen.dart';
-import 'screens/home_screen.dart';
 import '../tempdata.dart' as temp_data;
 import '../database.dart'; 
 
@@ -571,7 +569,7 @@ class _SnakeGameState extends State<SnakeGame> {
                 // Close dialog and navigate to leaderboard.
                 Navigator.of(context).pop(); 
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
+                  MaterialPageRoute(builder: (_) => const MainScreen(initialTab: 3)),
                 );
               },
               style: TextButton.styleFrom(
