@@ -579,7 +579,7 @@ class _SnakeGameState extends State<SnakeGame> {
               icon: Icon(Icons.arrow_back, color: colors['labelText']),
               onPressed: () {
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  MaterialPageRoute(builder: (_) => const MainScreen()),
                 );
               },
             ),
