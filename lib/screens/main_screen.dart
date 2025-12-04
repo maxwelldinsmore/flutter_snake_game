@@ -6,14 +6,22 @@ import 'leaderboard_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialTab;
+  
+  const MainScreen({super.key, this.initialTab = 0});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selected = 0;
+  late int _selected;
+
+  @override
+  void initState() {
+    super.initState();
+    _selected = widget.initialTab;
+  }
 
   void _changeTab(int index) {
     setState(() => _selected = index);
