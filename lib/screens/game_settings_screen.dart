@@ -17,9 +17,8 @@ class _GameSettingsScreenState extends State<GameSettingsScreen> {
     final provider = context.watch<AppProvider>();
     if (provider.isLoading) {
       return Scaffold(
+        backgroundColor: Colors.black,
         body: Container(
-          width: double.infinity,
-          height: double.infinity,
           color: Colors.black,
           child: const Center(
             child: CircularProgressIndicator(color: Color(0xFFE4FF19)),
