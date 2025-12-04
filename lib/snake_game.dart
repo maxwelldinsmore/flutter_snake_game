@@ -691,7 +691,7 @@ class _SnakeGameState extends State<SnakeGame> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'High Score',
+                            'Your  High  Score',
                             style: TextStyle(
                               color: colors['labelText'],
                               fontSize: 16,
