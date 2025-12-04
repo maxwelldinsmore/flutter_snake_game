@@ -38,14 +38,9 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Snake Game',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 64,
-                fontFamily: 'arcade',
-                fontWeight: FontWeight.normal,
-              ),
+            Image.asset(
+              'lib/assets/svg/SnakeLogo2.png',
+              height: 150,
             ),
             const SizedBox(height: 24),
             _buildMenuItem(context, 'Play', const Color(0xFFE4FF19), () {

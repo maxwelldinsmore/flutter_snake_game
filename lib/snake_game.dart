@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_game/screens/main_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'app_provider.dart';
 import 'screens/leaderboard_screen.dart';
 import 'screens/home_screen.dart';
@@ -19,10 +20,13 @@ class SnakeGame extends StatefulWidget {
   State<SnakeGame> createState() => _SnakeGameState();
 }
 
-
-
 // The main state class for the Snake Game.
 class _SnakeGameState extends State<SnakeGame> {
+  
+  // Audio players
+  final AudioPlayer _musicPlayer = AudioPlayer();
+  final AudioPlayer _soundPlayer = AudioPlayer();
+  
   // Game settings (will be updated from AppProvider).
   GridSize currentGridSize = GridSize.medium;
   SnakeSpeed currentSpeed = SnakeSpeed.medium;
@@ -65,6 +69,9 @@ class _SnakeGameState extends State<SnakeGame> {
     if (_appProvider != provider) {
       _appProvider = provider;
 
+    // Initialize audio when first loading
+    _initializeAudio();
+
     // Initial settings load.
     currentGridSize = _appProvider!.currentGridSize;
     currentSpeed = _appProvider!.currentSpeed;
@@ -93,6 +100,8 @@ class _SnakeGameState extends State<SnakeGame> {
           currentTheme = _appProvider!.currentTheme;
           setTheme(currentTheme);
         }
+        // Update audio when settings change
+        _updateAudioSettings();
       });
     };
       _appProvider!.addListener(_appListener!);
@@ -105,7 +114,55 @@ class _SnakeGameState extends State<SnakeGame> {
     if (_appProvider != null && _appListener != null) {
       _appProvider!.removeListener(_appListener!);
     }
+    // Dispose audio players
+    _musicPlayer.dispose();
+    _soundPlayer.dispose();
     super.dispose();
+  }
+
+  // Initialize audio players and start background music
+  Future<void> _initializeAudio() async {
+    try {
+      // Set player mode for web compatibility
+      await _musicPlayer.setPlayerMode(PlayerMode.mediaPlayer);
+      await _soundPlayer.setPlayerMode(PlayerMode.mediaPlayer);
+      
+      // Set music to loop
+      await _musicPlayer.setReleaseMode(ReleaseMode.loop);
+      
+      // Check if music is enabled before playing
+      if (_appProvider != null && _appProvider!.musicEnabled) {
+        // Load and play background music
+        await _musicPlayer.setSourceAsset('assets/audio/8-bit-music.mp3');
+        await _musicPlayer.resume();
+      }
+    } catch (e) {
+      print('Error initializing audio: $e');
+    }
+  }
+
+  // Update audio settings based on provider toggles
+  void _updateAudioSettings() {
+    if (_appProvider != null) {
+      // Control background music
+      if (_appProvider!.musicEnabled) {
+        _musicPlayer.resume();
+      } else {
+        _musicPlayer.pause();
+      }
+    }
+  }
+
+  // Play eat sound effect
+  Future<void> _playEatSound() async {
+    if (_appProvider != null && _appProvider!.soundEnabled) {
+      try {
+        await _soundPlayer.setSourceAsset('assets/audio/snake-food-music.mp3');
+        await _soundPlayer.resume();
+      } catch (e) {
+        print('Error playing eat sound: $e');
+      }
+    }
   }
 
   // Method to update grid size.
@@ -354,6 +411,9 @@ class _SnakeGameState extends State<SnakeGame> {
       // Check if snake eats food
       if (snakePosition.last == foodPosition) {
         currentScore++;
+        // Play eat sound effect
+        _playEatSound();
+        
         // Generate new food immediately.
         // Temporarily hide food
         foodPosition = -1; 

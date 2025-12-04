@@ -64,6 +64,18 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          // SNAKE Logo at the top
+          Positioned(
+            top: 60,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Image.asset(
+                'lib/assets/svg/SnakeLogo2.png',
+                height: 150,
+              ),
+            ),
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
@@ -73,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text(
                     'Sign In',
                     style: TextStyle(
-                      color: Color(0xFFE4FF19),
+                      color: Color(0xFFFF0000),
                       fontSize: 48,
                       fontFamily: 'arcade',
                       fontWeight: FontWeight.normal,
@@ -140,14 +152,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   if (_error != null) ...[
                     Text(_error!, style: const TextStyle(color: Colors.red)),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 15),
                   ],
                   // --- SVG Login Button ---
-                  GestureDetector(
-                    onTap: _loading ? null : _login,
-                    child: SvgPicture.asset(
-                      'lib/assets/svg/login_button.svg',
-                      height: 60, // Increase height if needed
+                  Center(
+                    child: GestureDetector(
+                      onTap: _loading ? null : _login,
+                      child: SvgPicture.asset(
+                        'lib/assets/svg/login_button.svg',
+                        height: 45,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20), // spacing
@@ -164,11 +178,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterScreen()));
               },
               child: const Text(
-                'sign up here',
+                "Don't Have an account? Sign up here!",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFFE4FF19),
-                  fontSize: 36,
+                  fontSize: 28,
                   fontFamily: 'arcade',
                 ),
               ),
