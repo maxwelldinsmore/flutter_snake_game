@@ -113,17 +113,17 @@ class _SnakeGameState extends State<SnakeGame> {
     }
   }
 
-  // @override
-  // void dispose() {
-  //   // Remove listener to avoid memory leaks.
-  //   if (_appProvider != null && _appListener != null) {
-  //     _appProvider!.removeListener(_appListener!);
-  //   }
+  @override
+  void dispose() {
+    // Remove listener to avoid memory leaks.
+    if (_appProvider != null && _appListener != null) {
+      _appProvider!.removeListener(_appListener!);
+    }
   //   // Dispose audio players
   //   _musicPlayer.dispose();
   //   _soundPlayer.dispose();
-  //   super.dispose();
-  // }
+    super.dispose();
+  }
 
   // // Initialize audio players and start background music
   // Future<void> _initializeAudio() async {
@@ -696,88 +696,106 @@ class _SnakeGameState extends State<SnakeGame> {
               // Game area in the middle
               Expanded(
                 flex: 5,
-                child: GestureDetector(
-                  onVerticalDragUpdate: (details) {
-                    if (direction != Direction.up && details.delta.dy > 0) {
-                      direction = Direction.down;
-                    } else if (direction != Direction.down && details.delta.dy < 0) {
-                      direction = Direction.up;
-                    }
-                  },
-                  onHorizontalDragUpdate: (details) {
-                    if (direction != Direction.left && details.delta.dx > 0) {
-                      direction = Direction.right;
-                    } else if (direction != Direction.right && details.delta.dx < 0) {
-                      direction = Direction.left;
-                    }
-                  },
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: totalSquares,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: gridCols,
-                    ),
-                    itemBuilder: (context, index) {
-                      // Snake head
-                      if (snakePosition.last == index) {
-                        return Container(
-                          margin: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            color: colors['snakeHead'],
-                            borderRadius: BorderRadius.circular(4),
-                            boxShadow: currentTheme == GameTheme.retro ? [
-                              BoxShadow(
-                                color: colors['snakeHead']!.withOpacity(0.5),
-                                blurRadius: 8,
-                                spreadRadius: 1,
-                              ),
-                            ] : null,
-                          ),
-                        );
-                      }
-                      // Snake body
-                      else if (snakePosition.contains(index)) {
-                        return Container(
-                          margin: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            color: colors['snakeBody'],
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        );
-                      }
-                      // Food
-                      else if (foodPosition == index) {
-                        return Container(
-                          margin: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            color: colors['food'],
-                            borderRadius: BorderRadius.circular(4),
-                            boxShadow: currentTheme == GameTheme.retro ? [
-                              BoxShadow(
-                                color: colors['food']!.withOpacity(0.5),
-                                blurRadius: 8,
-                                spreadRadius: 1,
-                              ),
-                            ] : null,
-                          ),
-                        );
-                      }
-                      // Empty square
-                      else {
-                        return Container(
-                          margin: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            color: colors['gridEmpty'],
-                            border: Border.all(
-                              color: colors['gridLine']!,
-                              width: 0.5,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    //calculate tile height and width based on available space
+                    final tileWidth = constraints.maxWidth / gridCols;
+                    final tileHeight = constraints.maxHeight / gridRows;
+                    final tileSize = tileWidth < tileHeight ? tileWidth : tileHeight;
+
+                    return Center(
+                      child: SizedBox(
+                        width: tileSize * gridCols,
+                        height: tileSize * gridRows,
+                        child: GestureDetector(
+                          onVerticalDragUpdate: (details) {
+                            if (direction != Direction.up && details.delta.dy > 0) {
+                              direction = Direction.down;
+                            } else if (direction != Direction.down && details.delta.dy < 0) {
+                              direction = Direction.up;
+                            }
+                          },
+                          onHorizontalDragUpdate: (details) {
+                            if (direction != Direction.left && details.delta.dx > 0) {
+                              direction = Direction.right;
+                            } else if (direction != Direction.right && details.delta.dx < 0) {
+                              direction = Direction.left;
+                            }
+                          },
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: totalSquares,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: gridCols,
+                              mainAxisSpacing: 2,
+                              crossAxisSpacing: 2,
+                              childAspectRatio: 1,
                             ),
-                            borderRadius: BorderRadius.circular(2),
+                            itemBuilder: (context, index) {
+                              // Snake head
+                              if (snakePosition.last == index) {
+                                return Container(
+                                  margin: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color: colors['snakeHead'],
+                                    borderRadius: BorderRadius.circular(4),
+                                    boxShadow: currentTheme == GameTheme.retro ? [
+                                      BoxShadow(
+                                        color: colors['snakeHead']!.withOpacity(0.5),
+                                        blurRadius: 8,
+                                        spreadRadius: 1,
+                                      ),
+                                    ] : null,
+                                  ),
+                                );
+                              }
+                              // Snake body
+                              else if (snakePosition.contains(index)) {
+                                return Container(
+                                  margin: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color: colors['snakeBody'],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                );
+                              }
+                              // Food
+                              else if (foodPosition == index) {
+                                return Container(
+                                  margin: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color: colors['food'],
+                                    borderRadius: BorderRadius.circular(4),
+                                    boxShadow: currentTheme == GameTheme.retro ? [
+                                      BoxShadow(
+                                        color: colors['food']!.withOpacity(0.5),
+                                        blurRadius: 8,
+                                        spreadRadius: 1,
+                                      ),
+                                    ] : null,
+                                  ),
+                                );
+                              }
+                              // Empty square
+                              else {
+                                return Container(
+                                  margin: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color: colors['gridEmpty'],
+                                    border: Border.all(
+                                      color: colors['gridLine']!,
+                                      width: 0.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                );
+                              }
+                            },
                           ),
-                        );
-                      }
-                    },
-                  ),
+                        )
+                      )
+                    );
+                  },
                 ),
               ),
               // Control buttons at the bottom
