@@ -174,8 +174,10 @@ class _LoginScreenState extends State<LoginScreen> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterScreen()));
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterScreen()));
+                // Refresh the login screen after returning from registration
+                setState(() {});
               },
               child: const Text(
                 "Don't Have an account? Sign up here!",

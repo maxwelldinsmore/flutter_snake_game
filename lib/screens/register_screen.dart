@@ -33,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final password = _passwordCtrl.text;
       await _db.createUserdata({'username': username, 'password': password});
       if (!mounted) return;
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(true);
     } catch (e) {
       setState(() {
         _error = 'Register error: $e';
